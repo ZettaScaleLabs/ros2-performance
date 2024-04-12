@@ -47,8 +47,7 @@ public:
 
   void spin(
     std::chrono::seconds duration,
-    bool wait_for_discovery = true,
-    bool name_threads = true);
+    bool wait_for_discovery = true);
 
   void save_latency_all_stats(
     const std::string & filename,

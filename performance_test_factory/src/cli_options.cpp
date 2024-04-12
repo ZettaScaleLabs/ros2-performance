@@ -26,7 +26,6 @@ Options::Options()
   executor = 2;
   node = 1;
   ros_params = true;
-  name_threads = true;
   duration_sec = 5;
   csv_out = false;
   resources_sampling_per_ms = 1000;
@@ -50,7 +49,6 @@ void Options::parse(int argc, char ** argv)
 
   std::string ipc_option;
   std::string ros_params_option;
-  std::string name_threads_option;
   std::string tracking_enabled_option;
   std::string csv_out_option;
   options.positional_help("FILE [FILE...]").show_positional_help();
@@ -62,9 +60,6 @@ void Options::parse(int argc, char ** argv)
     cxxopts::value<std::string>(ipc_option)->default_value(ipc ? "on" : "off"), "on/off")(
     "ros_params", "enable parameter services",
     cxxopts::value<std::string>(ros_params_option)->default_value(ros_params ? "on" : "off"),
-    "on/off")(
-    "name_threads", "enable naming threads",
-    cxxopts::value<std::string>(name_threads_option)->default_value(name_threads ? "on" : "off"),
     "on/off")(
     "t,time", "test duration",
     cxxopts::value<int>(duration_sec)->default_value(std::to_string(duration_sec)), "sec")(
@@ -132,7 +127,6 @@ void Options::parse(int argc, char ** argv)
 
   ipc = (ipc_option == "on" ? true : false);
   ros_params = (ros_params_option == "on" ? true : false);
-  name_threads = (name_threads_option == "on" ? true : false);
   tracking_options.is_enabled = (tracking_enabled_option == "on" ? true : false);
   csv_out = (csv_out_option == "on" ? true : false);
 }
@@ -154,7 +148,6 @@ std::ostream & operator<<(std::ostream & os, const Options & options)
   os << "node_type: " << node_type << std::endl;
   os << "ipc: " << (options.ipc ? "on" : "off") << std::endl;
   os << "ros_params: " << (options.ros_params ? "on" : "off") << std::endl;
-  os << "name_threads: " << (options.name_threads ? "on" : "off") << std::endl;
   os << "duration_sec: " << options.duration_sec << " seconds" << std::endl;
   os << "resources_sampling_per_ms: " << options.resources_sampling_per_ms << std::endl;
   os << "csv_out: " << (options.csv_out ? "on" : "off") << std::endl;

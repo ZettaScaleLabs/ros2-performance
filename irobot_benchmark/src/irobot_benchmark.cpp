@@ -164,8 +164,7 @@ int main(int argc, char ** argv)
   bool wait_for_discovery = true;
   ros2_system->spin(
     std::chrono::seconds(options.duration_sec),
-    wait_for_discovery,
-    options.name_threads);
+    wait_for_discovery);
 
   // terminate the experiment
   ru_logger.stop();

@@ -29,7 +29,6 @@ public:
 
   bool ipc;
   bool ros_params;
-  bool name_threads;
   int executor;
   int node;
   int duration_sec;
