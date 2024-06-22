@@ -31,8 +31,8 @@ std::ostream & operator<<(std::ostream & os, const ExecutorType & t)
     case ExecutorType::EVENTS_EXECUTOR:
       executor_name = "EventsExecutor";
       break;
-    default:
-      executor_name = "Unknown ExecutorType";
+    case ExecutorType::MULTI_THREAD_EXECUTOR:
+      executor_name = "MultiThreadedExecutor";
       break;
   }
 
@@ -52,6 +52,9 @@ std::shared_ptr<rclcpp::Executor> make_executor(ExecutorType type)
       break;
     case ExecutorType::EVENTS_EXECUTOR:
       executor = std::make_shared<rclcpp::experimental::executors::EventsExecutor>();
+      break;
+    case ExecutorType::MULTI_THREAD_EXECUTOR:
+      executor = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
       break;
   }
 

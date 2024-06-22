@@ -57,7 +57,9 @@ create_result_directory(const std::string & topology_json)
 
   const std::string make_dir_cmd = "mkdir -p " + result_dir_name;
   const int ret = system(make_dir_cmd.c_str());
-  assert(ret == 0);
+  if (ret != 0) {
+    throw std::runtime_error("Failed to create result directory");
+  }
 
   return result_dir_name;
 }
