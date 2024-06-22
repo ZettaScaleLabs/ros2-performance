@@ -7,6 +7,7 @@
  *  You may use, distribute and modify this code under the BSD-3-Clause license.
  */
 
+#include <iterator>
 #include <regex>
 #include <sstream>
 #include <string>
