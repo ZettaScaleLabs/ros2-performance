@@ -5,7 +5,7 @@ on: pull_request
 jobs:
   build_and_test:
     name: build_and_test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3.0.2
       - uses: ros-tooling/setup-ros@v0.4
