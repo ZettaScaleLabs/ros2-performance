@@ -11,6 +11,7 @@
 #include <regex>
 #include <sstream>
 #include <string>
+#include <iterator>
 
 #include "performance_test_factory/names_utilities.hpp"
 
