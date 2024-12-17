@@ -150,7 +150,7 @@ void ResourceUsageLogger::_get()
 
   if (in.is_open()) {
     in >> virtual_mem_pages_string;
-    m_resources.mem_virtual_KB = ((uint64_t)std::stoi(virtual_mem_pages_string) * m_pagesize) >> 10;
+    m_resources.mem_virtual_KB = ((uint64_t)std::stol(virtual_mem_pages_string) * m_pagesize) >> 10;
     in.close();
   } else {
     m_resources.mem_virtual_KB = -1;
