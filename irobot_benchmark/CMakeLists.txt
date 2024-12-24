@@ -37,7 +37,8 @@ set(TOPOLOGY_FILES
 
 install(FILES
   ${TOPOLOGY_FILES}
-  DESTINATION lib/${PROJECT_NAME}/topology)
+  DESTINATION lib/${PROJECT_NAME}/topology
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
