@@ -5,15 +5,15 @@ on: pull_request
 jobs:
   build_and_test:
     name: build_and_test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3.0.2
-      - uses: ros-tooling/setup-ros@v0.4
+      - uses: ros-tooling/setup-ros@v0.7
         with:
           required-ros-distributions: rolling
       - name: Fetch submodules
         run: git submodule update --init --recursive
-      - uses: ros-tooling/action-ros-ci@0.2.6
+      - uses: ros-tooling/action-ros-ci@v0.3
         id: action_ros_ci_step
         with:
           target-ros2-distro: rolling
