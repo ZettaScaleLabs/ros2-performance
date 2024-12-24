@@ -79,7 +79,7 @@ private:
   std::chrono::time_point<std::chrono::steady_clock> m_t1_real_start;
   pid_t m_pid;
   int m_pagesize;
-  std::function<uint64_t()> m_get_average_latency;
+  std::function<uint64_t()> m_get_average_latency_func;
 
   // the following values are used for comparing different plots using the python scripts
   bool m_has_system_info {false};

@@ -37,21 +37,7 @@ set(TOPOLOGY_FILES
 
 install(FILES
   ${TOPOLOGY_FILES}
-  DESTINATION lib/${PROJECT_NAME}/topology)
-
-set(SCRIPTS
-  scripts/compare_latency.py
-  scripts/plot_latency.py
-  scripts/plot_cpu_memory.py
-)
-
-install(FILES
-  ${SCRIPTS}
-  DESTINATION lib/${PROJECT_NAME}/scripts)
-
-# Install the entire comms_benchmark directory
-install(DIRECTORY comms_benchmark/
-  DESTINATION lib/${PROJECT_NAME}/comms_benchmark
+  DESTINATION lib/${PROJECT_NAME}/topology
 )
 
 if(BUILD_TESTING)

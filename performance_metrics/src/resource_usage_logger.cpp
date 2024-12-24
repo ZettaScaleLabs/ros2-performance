@@ -78,7 +78,7 @@ void ResourceUsageLogger::start(std::chrono::milliseconds period)
 void ResourceUsageLogger::set_get_latency_callback(
   std::function<uint64_t()> get_average_latency)
 {
-  m_get_average_latency = get_average_latency;
+  m_get_average_latency_func = get_average_latency;
 }
 
 void ResourceUsageLogger::stop()
@@ -163,8 +163,8 @@ void ResourceUsageLogger::_get()
   }
 
   // Call the latency callback to get the average latency in microseconds
-  if (m_get_average_latency) {
-    m_resources.latency_us = m_get_average_latency();
+  if (m_get_average_latency_func) {
+    m_resources.latency_us = m_get_average_latency_func();
   }
 }
 

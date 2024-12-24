@@ -198,10 +198,14 @@ void PerformanceNodeBase::add_action_server(
   const std::string & action_name,
   const rclcpp::QoS & qos_profile)
 {
+  (void)qos_profile;
+
   // Define the callback for handling goals
   auto handle_goal = [this, action_name] (const rclcpp_action::GoalUUID & guuid,
     std::shared_ptr<const typename Action::Goal> goal)
     {
+      (void)guuid;
+
       auto & server_tuple = m_action_servers.at(action_name);
       auto & tracker = std::get<1>(server_tuple);
 
@@ -285,6 +289,8 @@ void PerformanceNodeBase::add_action_client(
   const std::string & action_name,
   const rclcpp::QoS & qos_profile)
 {
+  (void)qos_profile;
+
   auto client = rclcpp_action::create_client<Action>(
     m_node_interfaces.base,
     m_node_interfaces.graph,
@@ -494,7 +500,7 @@ void PerformanceNodeBase::send_action_goal_request(const std::string & name)
       // RCLCPP_INFO(this->get_node_logger(), "Result received for action %s", name.c_str());
       tracker.scan(result.result->header, m_node_interfaces.clock->get_clock()->now(), m_events_logger);
     } else {
-      RCLCPP_WARN(this->get_node_logger(), "Action %s failed with result code %d", name.c_str(), result.code);
+      RCLCPP_WARN(this->get_node_logger(), "Action %s failed with result code %d", name.c_str(), static_cast<int>(result.code));
     }
 
     m_action_client_lock = false;
