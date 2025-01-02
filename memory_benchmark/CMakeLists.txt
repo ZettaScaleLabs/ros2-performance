@@ -13,7 +13,6 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
-find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 
 # Generate all ROS 2 messages
