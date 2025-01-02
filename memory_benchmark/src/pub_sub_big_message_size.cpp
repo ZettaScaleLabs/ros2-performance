@@ -1,5 +1,5 @@
 #include "memory-test.hpp"
-#include "memory_msgs/msg/m0_mb.hpp"
+#include "memory_benchmark/msg/m0_mb.hpp"
 #include "helper_macros.hpp"
 
 #include "rclcpp/rclcpp.hpp"

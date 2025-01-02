@@ -70,72 +70,63 @@ rosidl_generate_interfaces(${PROJECT_NAME}
  "msg/M50.msg"
 )
 
-# add_executable(memory-test src/memory-test.cpp)
-# target_include_directories(memory-test PRIVATE include)
-# ament_target_dependencies(memory-test rclcpp memory_msgs std_srvs)
+rosidl_get_typesupport_target(memory_benchmark_msgs "${PROJECT_NAME}" "rosidl_typesupport_cpp")
 
 add_executable(default_nodes src/default_nodes.cpp)
 target_include_directories(default_nodes PRIVATE include)
-ament_target_dependencies(default_nodes rclcpp)
+target_link_libraries(default_nodes PRIVATE rclcpp::rclcpp ${memory_benchmark_msgs})
 
 add_executable(nodes_params_off src/nodes_params_off.cpp)
 target_include_directories(nodes_params_off PRIVATE include)
-ament_target_dependencies(nodes_params_off rclcpp)
+target_link_libraries(nodes_params_off PRIVATE rclcpp::rclcpp)
 
 add_executable(default_subs_params_off src/default_subs_params_off.cpp)
 target_include_directories(default_subs_params_off PRIVATE include)
-ament_target_dependencies(default_subs_params_off rclcpp)
-rosidl_target_interfaces(default_subs_params_off ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(default_subs_params_off PRIVATE rclcpp::rclcpp ${memory_benchmark_msgs})
 
 add_executable(default_pubs_params_off src/default_pubs_params_off.cpp)
 target_include_directories(default_pubs_params_off PRIVATE include)
-ament_target_dependencies(default_pubs_params_off rclcpp)
-rosidl_target_interfaces(default_pubs_params_off ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(default_pubs_params_off PRIVATE rclcpp::rclcpp ${memory_benchmark_msgs})
 
 add_executable(default_clients_params_off src/default_clients_params_off.cpp)
 target_include_directories(default_clients_params_off PRIVATE include)
-ament_target_dependencies(default_clients_params_off rclcpp std_srvs)
+target_link_libraries(default_clients_params_off PRIVATE rclcpp::rclcpp ${std_srvs_TARGETS})
 
 add_executable(default_services_params_off src/default_services_params_off.cpp)
 target_include_directories(default_services_params_off PRIVATE include)
-ament_target_dependencies(default_services_params_off rclcpp std_srvs)
+target_link_libraries(default_services_params_off PRIVATE rclcpp::rclcpp ${std_srvs_TARGETS})
 
 add_executable(nodes_params_off_logging_on src/nodes_params_off_logging_on.cpp)
 target_include_directories(nodes_params_off_logging_on PRIVATE include)
-ament_target_dependencies(nodes_params_off_logging_on rclcpp)
+target_link_libraries(nodes_params_off_logging_on PRIVATE rclcpp::rclcpp)
 
 add_executable(pub_sub_diff_topic src/pub_sub_diff_topic.cpp)
 target_include_directories(pub_sub_diff_topic PRIVATE include)
-ament_target_dependencies(pub_sub_diff_topic rclcpp)
-rosidl_target_interfaces(pub_sub_diff_topic ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(pub_sub_diff_topic PRIVATE rclcpp::rclcpp ${memory_benchmark_msgs})
 
 add_executable(pub_sub_same_topic src/pub_sub_same_topic.cpp)
 target_include_directories(pub_sub_same_topic PRIVATE include)
-ament_target_dependencies(pub_sub_same_topic rclcpp)
-rosidl_target_interfaces(pub_sub_same_topic ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(pub_sub_same_topic PRIVATE rclcpp::rclcpp ${memory_benchmark_msgs})
 
 add_executable(pub_sub_diff_msg_type src/pub_sub_diff_msg_type.cpp)
 target_include_directories(pub_sub_diff_msg_type PRIVATE include)
-ament_target_dependencies(pub_sub_diff_msg_type rclcpp)
-rosidl_target_interfaces(pub_sub_diff_msg_type ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(pub_sub_diff_msg_type PRIVATE rclcpp::rclcpp ${memory_benchmark_msgs})
 
 add_executable(cli_serv_diff_topics src/cli_serv_diff_topics.cpp)
 target_include_directories(cli_serv_diff_topics PRIVATE include)
-ament_target_dependencies(cli_serv_diff_topics rclcpp std_srvs)
+target_link_libraries(cli_serv_diff_topics PRIVATE rclcpp::rclcpp ${std_srvs_TARGETS})
 
 add_executable(cli_serv_same_topics src/cli_serv_same_topics.cpp)
 target_include_directories(cli_serv_same_topics PRIVATE include)
-ament_target_dependencies(cli_serv_same_topics rclcpp std_srvs)
+target_link_libraries(cli_serv_same_topics PRIVATE rclcpp::rclcpp ${std_srvs_TARGETS})
 
 add_executable(pub_sub_big_history_size src/pub_sub_big_history_size.cpp)
 target_include_directories(pub_sub_big_history_size PRIVATE include)
-ament_target_dependencies(pub_sub_big_history_size rclcpp)
-rosidl_target_interfaces(pub_sub_big_history_size ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(pub_sub_big_history_size PRIVATE rclcpp::rclcpp ${memory_benchmark_msgs})
 
 add_executable(pub_sub_big_message_size src/pub_sub_big_message_size.cpp)
 target_include_directories(pub_sub_big_message_size PRIVATE include)
-ament_target_dependencies(pub_sub_big_message_size rclcpp)
-rosidl_target_interfaces(pub_sub_big_message_size ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(pub_sub_big_message_size PRIVATE rclcpp::rclcpp ${memory_benchmark_msgs})
 
 install(TARGETS
   default_nodes

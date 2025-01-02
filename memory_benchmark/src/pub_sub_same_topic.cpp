@@ -2,7 +2,7 @@
 #include "helper_macros.hpp"
 
 #include "rclcpp/rclcpp.hpp"
-#include "memory_msgs/msg/m1.hpp"
+#include "memory_benchmark/msg/m1.hpp"
 
 using namespace std::chrono_literals;
 

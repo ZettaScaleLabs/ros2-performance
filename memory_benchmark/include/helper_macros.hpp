@@ -6,38 +6,38 @@
 
 #define NODE_P(NUM, TYPE) \
   auto node_##NUM = rclcpp::Node::make_shared("node_p_"#TYPE"_"#NUM, node_options); \
-  auto publisher_##NUM = node_##NUM ->create_publisher<memory_msgs::msg::TYPE>("topic_"#NUM, 1); \
+  auto publisher_##NUM = node_##NUM ->create_publisher<memory_benchmark::msg::TYPE>("topic_"#NUM, 1); \
   executor->add_node(node_##NUM); \
   print_rss("node_p_"#TYPE, NUM);
 
 #define NODE_PS_DIFF_TOPIC(NUM, TYPE) \
   auto node_##NUM = rclcpp::Node::make_shared("node_ps_"#TYPE"_"#NUM, node_options); \
-  auto publisher_##NUM = node_##NUM ->create_publisher<memory_msgs::msg::TYPE>("topic_"#NUM, 1); \
-  auto subscription_##NUM = node_##NUM ->create_subscription<memory_msgs::msg::TYPE>( \
-    "topic_"#NUM, 10,[](const memory_msgs::msg::TYPE & msg) {(void)msg;}); \
+  auto publisher_##NUM = node_##NUM ->create_publisher<memory_benchmark::msg::TYPE>("topic_"#NUM, 1); \
+  auto subscription_##NUM = node_##NUM ->create_subscription<memory_benchmark::msg::TYPE>( \
+    "topic_"#NUM, 10,[](const memory_benchmark::msg::TYPE & msg) {(void)msg;}); \
   executor->add_node(node_##NUM); \
   print_rss("node_ps_dif_T_"#TYPE, NUM);
 
 #define NODE_PS_DIFF_TOPIC_BIG_HISTORY_SIZE(NUM, TYPE) \
   auto node_##NUM = rclcpp::Node::make_shared("node_ps_"#TYPE"_"#NUM, node_options); \
-  auto publisher_##NUM = node_##NUM ->create_publisher<memory_msgs::msg::TYPE>("topic_"#NUM, 100); \
-  auto subscription_##NUM = node_##NUM ->create_subscription<memory_msgs::msg::TYPE>( \
-    "topic_"#NUM, 100,[](const memory_msgs::msg::TYPE & msg) {(void)msg;}); \
+  auto publisher_##NUM = node_##NUM ->create_publisher<memory_benchmark::msg::TYPE>("topic_"#NUM, 100); \
+  auto subscription_##NUM = node_##NUM ->create_subscription<memory_benchmark::msg::TYPE>( \
+    "topic_"#NUM, 100,[](const memory_benchmark::msg::TYPE & msg) {(void)msg;}); \
   executor->add_node(node_##NUM); \
   print_rss("node_ps_dif_T_"#TYPE, NUM);
 
 #define NODE_PS_SAME_TOPIC(NUM, TYPE) \
   auto node_##NUM = rclcpp::Node::make_shared("node_ps_"#TYPE"_"#NUM, node_options); \
-  auto publisher_##NUM = node_##NUM ->create_publisher<memory_msgs::msg::TYPE>("topic", 1); \
-  auto subscription_##NUM = node_##NUM ->create_subscription<memory_msgs::msg::TYPE>( \
-    "topic", 10,[](const memory_msgs::msg::TYPE & msg) {(void)msg;}); \
+  auto publisher_##NUM = node_##NUM ->create_publisher<memory_benchmark::msg::TYPE>("topic", 1); \
+  auto subscription_##NUM = node_##NUM ->create_subscription<memory_benchmark::msg::TYPE>( \
+    "topic", 10,[](const memory_benchmark::msg::TYPE & msg) {(void)msg;}); \
   executor->add_node(node_##NUM); \
   print_rss("node_ps_sameT_"#TYPE, NUM);
 
 #define NODE_S(NUM, TYPE) \
   auto node_##NUM = rclcpp::Node::make_shared("node_s_"#TYPE"_"#NUM, node_options); \
-  auto subscription_##NUM = node_##NUM ->create_subscription<memory_msgs::msg::TYPE>( \
-    "topic_"#NUM, 10,[](const memory_msgs::msg::TYPE & msg) {(void)msg;}); \
+  auto subscription_##NUM = node_##NUM ->create_subscription<memory_benchmark::msg::TYPE>( \
+    "topic_"#NUM, 10,[](const memory_benchmark::msg::TYPE & msg) {(void)msg;}); \
   executor->add_node(node_##NUM); \
   print_rss("node_s_"#TYPE, NUM);
 
@@ -69,12 +69,12 @@
 
 // Single nodes with many entities
 #define PUB(NUM,TYPE) \
-  auto publisher_##NUM = node_1->create_publisher<memory_msgs::msg::TYPE>("topic_"#NUM, 1); \
+  auto publisher_##NUM = node_1->create_publisher<memory_benchmark::msg::TYPE>("topic_"#NUM, 1); \
   print_rss("pub_"#TYPE, NUM);
 
 #define SUB(NUM,TYPE) \
-  auto subscription_##NUM = node_1->create_subscription<memory_msgs::msg::TYPE>( \
-    "topic_"#NUM, 10,[](const memory_msgs::msg::TYPE & msg) {(void)msg;}); \
+  auto subscription_##NUM = node_1->create_subscription<memory_benchmark::msg::TYPE>( \
+    "topic_"#NUM, 10,[](const memory_benchmark::msg::TYPE & msg) {(void)msg;}); \
   print_rss("sub_"#TYPE, NUM);
 
 #define CLI(NUM) \
@@ -86,7 +86,7 @@
   print_rss("service", NUM);
 
 #define PUBLISH(NUM, TYPE) \
-  auto message_##NUM = memory_msgs::msg::TYPE(); \
+  auto message_##NUM = memory_benchmark::msg::TYPE(); \
   publisher_##NUM->publish(message_##NUM);
 
 #define CREATE_50(X) \
