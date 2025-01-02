@@ -2,7 +2,7 @@
 #define NODE(NUM) \
   auto node_##NUM = rclcpp::Node::make_shared("node_" #NUM, node_options); \
   executor->add_node(node_##NUM); \
-  print_rss("emtpy_node", NUM);
+  print_rss("empty_node", NUM);
 
 #define NODE_P(NUM, TYPE) \
   auto node_##NUM = rclcpp::Node::make_shared("node_p_"#TYPE"_"#NUM, node_options); \

@@ -7,21 +7,16 @@
 #include <sys/resource.h>
 #include <sys/types.h>
 
-// Globals
-struct rusage usage;
-long last_rss = 0;
-
-void print_header()
+inline void print_header()
 {
-  using namespace std;
-
   // Print header in CSV format
-  cout << "Entity,N,RSS,DELTA" << endl;
+  std::cout << "Entity,N,RSS,DELTA" << std::endl;
 }
 
-void print_rss(std::string description, size_t number)
+inline void print_rss(const std::string & description, size_t number)
 {
-  using namespace std;
+  struct rusage usage;
+  static long last_rss = 0;
 
   getrusage(RUSAGE_SELF, &usage);
 
@@ -29,10 +24,10 @@ void print_rss(std::string description, size_t number)
   long delta_rss = current_rss - last_rss;
 
   // Print values in CSV format
-  cout << description << ","
+  std::cout << description << ","
        << number << ","
        << current_rss << ","
-       << delta_rss << endl;
+       << delta_rss << std::endl;
 
   last_rss = usage.ru_maxrss;
 }
