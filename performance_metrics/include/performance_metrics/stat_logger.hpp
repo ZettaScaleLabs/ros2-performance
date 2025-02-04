@@ -30,7 +30,7 @@ void log_total_stats(
 
 void log_trackers_latency_all_stats(
   std::ostream & stream,
-  const std::vector<Tracker> & trackers,
+  std::vector<Tracker> & trackers,
   const bool csv_out = false,
   const std::string & title = "");
 

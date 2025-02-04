@@ -79,7 +79,7 @@ void log_total_stats(
 
 void log_trackers_latency_all_stats(
   std::ostream & stream,
-  const std::vector<Tracker> & trackers,
+  std::vector<Tracker> & trackers,
   const bool csv_out,
   const std::string & title)
 {
@@ -103,6 +103,7 @@ void log_trackers_latency_all_stats(
       stream_out(csv_out, stream, "sd_us", narrow_space);
       stream_out(csv_out, stream, "min_us", narrow_space);
       stream_out(csv_out, stream, "max_us", narrow_space);
+      stream_out(csv_out, stream, "median_us", narrow_space);
       stream_out(csv_out, stream, "freq_hz", narrow_space);
       stream_out(csv_out, stream, "throughput_Kb_per_sec", wide_space, false);
 
@@ -110,7 +111,7 @@ void log_trackers_latency_all_stats(
     };
 
   auto log_stats_line = [&stream, wide_space, narrow_space, separator, csv_out](
-    const Tracker & tracker)
+    Tracker & tracker)
     {
       stream_out(csv_out, stream, tracker.get_node_name(), wide_space);
       stream_out(csv_out, stream, tracker.get_entity_name(), wide_space);
@@ -123,6 +124,7 @@ void log_trackers_latency_all_stats(
       stream_out(csv_out, stream, std::round(tracker.stat().stddev()), narrow_space);
       stream_out(csv_out, stream, std::round(tracker.stat().min()), narrow_space);
       stream_out(csv_out, stream, std::round(tracker.stat().max()), narrow_space);
+      stream_out(csv_out, stream, tracker.median(), narrow_space);
       stream_out(csv_out, stream, tracker.frequency(), narrow_space);
       stream_out(csv_out, stream, (tracker.throughput() / 1024), wide_space, false);
 
@@ -134,7 +136,7 @@ void log_trackers_latency_all_stats(
   }
 
   log_header(title);
-  for (const auto & tracker : trackers) {
+  for (auto & tracker : trackers) {
     log_stats_line(tracker);
   }
 }

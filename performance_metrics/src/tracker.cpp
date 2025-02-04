@@ -32,6 +32,7 @@ void Tracker::scan(
 
   // store the last latency to be read from node
   m_last_latency = lat_us;
+  m_latencies.push_back(lat_us);
 
   bool late = false;
   bool too_late = false;

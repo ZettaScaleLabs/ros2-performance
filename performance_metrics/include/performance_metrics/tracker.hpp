@@ -13,6 +13,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "rclcpp/time.hpp"
 
@@ -20,6 +21,8 @@
 #include "performance_metrics/events_logger.hpp"
 
 #include "performance_test_msgs/msg/performance_header.hpp"
+
+#define MAX_LATENCY_RECORD_NUM 10000
 
 namespace performance_metrics
 {
@@ -47,7 +50,10 @@ public:
     const std::string & topic_srv_name,
     const Options & tracking_options)
   : m_node_name(node_name), m_topic_srv_name(topic_srv_name), m_tracking_options(tracking_options)
-  {}
+  {
+    // Reserve a fixed size to avoid reallocating memory
+    m_latencies.reserve(MAX_LATENCY_RECORD_NUM);
+  }
 
   void scan(
     const performance_test_msgs::msg::PerformanceHeader & header,
@@ -92,6 +98,18 @@ public:
 
   uint64_t last() const {return m_last_latency;}
 
+  uint64_t median()
+  {
+    sort(m_latencies.begin(), m_latencies.end());
+    if (m_latencies.size() == 0) {
+      return 0;
+    } else if (m_latencies.size() % 2 == 0) {
+      return (m_latencies[m_latencies.size() / 2 - 1] + m_latencies[m_latencies.size() / 2]) / 2;
+    } else {
+      return m_latencies[m_latencies.size() / 2];
+    }
+  }
+
   std::string get_node_name() const
   {
     return m_node_name;
@@ -111,6 +129,7 @@ private:
   // We should allow for shared ownership of the trackers
   mutable Stat<uint64_t> m_delta_stat;
   mutable uint64_t m_delta_received_messages = 0;
+  std::vector<uint64_t> m_latencies;
   uint64_t m_last_latency = 0;
   uint64_t m_lost_messages = 0;
   uint64_t m_received_messages = 0;

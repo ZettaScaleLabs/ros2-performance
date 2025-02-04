@@ -26,7 +26,8 @@ ComposableSubscriber::ComposableSubscriber(const rclcpp::NodeOptions & options)
 
 ComposableSubscriber::~ComposableSubscriber()
 {
-  performance_metrics::log_trackers_latency_all_stats(std::cout, this->sub_trackers());
+  auto trackers = this->sub_trackers();
+  performance_metrics::log_trackers_latency_all_stats(std::cout, trackers);
 }
 
 #include "rclcpp_components/register_node_macro.hpp"
