@@ -14,6 +14,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <cassert>
 
 #include "rclcpp/time.hpp"
 
@@ -26,6 +27,71 @@
 
 namespace performance_metrics
 {
+
+class QuantileStat {
+  public:
+    struct Quartiles {
+      uint64_t q1;
+      uint64_t q2;
+      uint64_t q3;
+    };
+
+    QuantileStat() {
+      // Reserve a fixed size to avoid reallocating memory
+      m_data.reserve(MAX_LATENCY_RECORD_NUM);
+    }
+
+    void add_sample(uint64_t sample) {
+      m_data.push_back(sample);
+    }
+
+    Quartiles quartiles() {
+      size_t size = m_data.size();
+      sort(m_data.begin(), m_data.end());
+
+      MedianPartition partition = this->median_partition(0, size);
+      MedianPartition lo_partition = this->median_partition(partition.lo_start, partition.lo_end);
+      MedianPartition hi_partition = this->median_partition(partition.hi_start, partition.hi_end);
+
+      Quartiles quartiles {};
+      quartiles.q1 = partition.median;
+      quartiles.q2 = lo_partition.median;
+      quartiles.q3 = hi_partition.median;
+      return quartiles;
+    }
+  private:
+    struct MedianPartition {
+      uint64_t median;
+      size_t lo_start;
+      size_t lo_end;
+      size_t hi_start;
+      size_t hi_end;
+    };
+
+    MedianPartition median_partition(size_t start, size_t end) {
+      size_t size = end - start;
+      assert(size > 0);
+      size_t mid = size / 2;
+
+      MedianPartition result {};
+
+      if (size % 2 == 0) {
+        result.lo_start = start;
+        result.lo_end = mid - 1;
+        result.hi_start = mid;
+        result.hi_end = end;
+        result.median = (m_data[result.lo_start] + m_data[result.lo_end]) / 2;
+      } else {
+        result.lo_start = start;
+        result.lo_end = mid - 1;
+        result.hi_start = mid + 1;
+        result.hi_end = end;
+        result.median = m_data[mid];
+      }
+      return result;
+    }
+    std::vector<uint64_t> m_data;
+};
 
 class Tracker
 {
@@ -50,10 +116,7 @@ public:
     const std::string & topic_srv_name,
     const Options & tracking_options)
   : m_node_name(node_name), m_topic_srv_name(topic_srv_name), m_tracking_options(tracking_options)
-  {
-    // Reserve a fixed size to avoid reallocating memory
-    m_latencies.reserve(MAX_LATENCY_RECORD_NUM);
-  }
+  {}
 
   void scan(
     const performance_test_msgs::msg::PerformanceHeader & header,
@@ -98,17 +161,7 @@ public:
 
   uint64_t last() const {return m_last_latency;}
 
-  uint64_t median()
-  {
-    sort(m_latencies.begin(), m_latencies.end());
-    if (m_latencies.size() == 0) {
-      return 0;
-    } else if (m_latencies.size() % 2 == 0) {
-      return (m_latencies[m_latencies.size() / 2 - 1] + m_latencies[m_latencies.size() / 2]) / 2;
-    } else {
-      return m_latencies[m_latencies.size() / 2];
-    }
-  }
+  QuantileStat quantile_stat() const {return m_quantile_stat;}
 
   std::string get_node_name() const
   {
@@ -129,7 +182,6 @@ private:
   // We should allow for shared ownership of the trackers
   mutable Stat<uint64_t> m_delta_stat;
   mutable uint64_t m_delta_received_messages = 0;
-  std::vector<uint64_t> m_latencies;
   uint64_t m_last_latency = 0;
   uint64_t m_lost_messages = 0;
   uint64_t m_received_messages = 0;
@@ -139,6 +191,7 @@ private:
   float m_frequency = 0;
   Stat<uint64_t> m_stat;
   uint32_t m_tracking_number_count = 0;
+  QuantileStat m_quantile_stat;
 
   rclcpp::Time m_first_msg_time;
   rclcpp::Time m_last_msg_time;

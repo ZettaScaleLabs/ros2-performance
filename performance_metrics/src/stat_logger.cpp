@@ -103,12 +103,15 @@ void log_trackers_latency_all_stats(
       stream_out(csv_out, stream, "sd_us", narrow_space);
       stream_out(csv_out, stream, "min_us", narrow_space);
       stream_out(csv_out, stream, "max_us", narrow_space);
-      stream_out(csv_out, stream, "median_us", narrow_space);
+      stream_out(csv_out, stream, "q1_us", narrow_space);
+      stream_out(csv_out, stream, "q2_us", narrow_space);
+      stream_out(csv_out, stream, "q3_us", narrow_space);
       stream_out(csv_out, stream, "freq_hz", narrow_space);
       stream_out(csv_out, stream, "throughput_Kb_per_sec", wide_space, false);
 
       stream << std::endl;
     };
+
 
   auto log_stats_line = [&stream, wide_space, narrow_space, separator, csv_out](
     Tracker & tracker)
@@ -124,7 +127,10 @@ void log_trackers_latency_all_stats(
       stream_out(csv_out, stream, std::round(tracker.stat().stddev()), narrow_space);
       stream_out(csv_out, stream, std::round(tracker.stat().min()), narrow_space);
       stream_out(csv_out, stream, std::round(tracker.stat().max()), narrow_space);
-      stream_out(csv_out, stream, tracker.median(), narrow_space);
+      auto quartiles = tracker.quantile_stat().quartiles();
+      stream_out(csv_out, stream, quartiles.q1, narrow_space);
+      stream_out(csv_out, stream, quartiles.q2, narrow_space);
+      stream_out(csv_out, stream, quartiles.q3, narrow_space);
       stream_out(csv_out, stream, tracker.frequency(), narrow_space);
       stream_out(csv_out, stream, (tracker.throughput() / 1024), wide_space, false);
 
