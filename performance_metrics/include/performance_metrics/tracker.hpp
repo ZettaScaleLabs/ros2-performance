@@ -49,7 +49,7 @@ class QuantileStat {
       size_t size = m_data.size();
       sort(m_data.begin(), m_data.end());
 
-      MedianPartition partition = this->median_partition(0, size);
+      MedianPartition partition = this->median_partition(0, size-1);
       MedianPartition lo_partition = this->median_partition(partition.lo_start, partition.lo_end);
       MedianPartition hi_partition = this->median_partition(partition.hi_start, partition.hi_end);
 
@@ -69,7 +69,7 @@ class QuantileStat {
     };
 
     MedianPartition median_partition(size_t start, size_t end) {
-      size_t size = end - start;
+      size_t size = end - start + 1;
       assert(size > 0);
       size_t mid = size / 2;
 
@@ -77,16 +77,16 @@ class QuantileStat {
 
       if (size % 2 == 0) {
         result.lo_start = start;
-        result.lo_end = mid - 1;
-        result.hi_start = mid;
+        result.lo_end = start + mid - 1;
+        result.hi_start = start + mid;
         result.hi_end = end;
         result.median = (m_data[result.lo_end] + m_data[result.hi_start]) / 2;
       } else {
         result.lo_start = start;
-        result.lo_end = mid - 1;
-        result.hi_start = mid + 1;
+        result.lo_end = start + mid - 1;
+        result.hi_start = start + mid + 1;
         result.hi_end = end;
-        result.median = m_data[mid];
+        result.median = m_data[start + mid];
       }
       return result;
     }
