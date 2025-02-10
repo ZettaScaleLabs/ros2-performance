@@ -54,8 +54,8 @@ class QuantileStat {
       MedianPartition hi_partition = this->median_partition(partition.hi_start, partition.hi_end);
 
       Quartiles quartiles {};
-      quartiles.q1 = partition.median;
-      quartiles.q2 = lo_partition.median;
+      quartiles.q1 = lo_partition.median;
+      quartiles.q2 = partition.median;
       quartiles.q3 = hi_partition.median;
       return quartiles;
     }
@@ -80,7 +80,7 @@ class QuantileStat {
         result.lo_end = mid - 1;
         result.hi_start = mid;
         result.hi_end = end;
-        result.median = (m_data[result.lo_start] + m_data[result.lo_end]) / 2;
+        result.median = (m_data[result.lo_end] + m_data[result.hi_start]) / 2;
       } else {
         result.lo_start = start;
         result.lo_end = mid - 1;
